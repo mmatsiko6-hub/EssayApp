@@ -91,4 +91,22 @@ def update_essay(essay_id, essay):
     connection.close()
 
     return rows_updated
-    
+
+def delete_essay(essay_id):
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    sql = """
+    delete from essays
+    where essay_id = :1
+    """
+
+    cursor.execute(sql, (essay_id,))
+    connection.commit()
+
+    rows_deleted = cursor.rowcount
+
+    cursor.close()
+    connection.close()
+
+    return rows_deleted    

@@ -33,3 +33,16 @@ def update_essay(essay_id: int, essay: EssayUpdate):
     return {
         "message": "Essay updated successfully"
     }
+
+@app.delete("/essays/{essay_id}")
+def delete_essay(essay_id: int):
+    rows_deleted = service.delete_essay(essay_id)
+
+    if rows_deleted == 0:
+        return {
+            "message": "Essay not found"
+        }
+
+    return {
+        "message": "Essay deleted successfully"
+    }
