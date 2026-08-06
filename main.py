@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from schemas import EssayCreate
+from schemas import EssayCreate, EssayUpdate
 import service
 
 app = FastAPI()
@@ -20,3 +20,16 @@ def get_essay_by_id(essay_id: int):
     if essay is None:
         return {"message": "Essay not found"}
     return essay
+
+@app.put("/essays/{essay_id}")
+def update_essay(essay_id: int, essay: EssayUpdate):
+    rows_updated = service.update_essay(essay_id, essay)
+
+    if rows_updated == 0:
+        return {
+            "message": "Essay not found"
+        }
+
+    return {
+        "message": "Essay updated successfully"
+    }
