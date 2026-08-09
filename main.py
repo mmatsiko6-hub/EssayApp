@@ -10,39 +10,18 @@ def home():
 
 @app.post("/essays")
 def create_essay(essay: EssayCreate):
-    service.create_essay(essay)
-    return {"message": "Essay created successfully"}
+   return service.create_essay(essay)
+   
 
 @app.get("/essays/{essay_id}")
-def get_essay_by_id(essay_id: int):
-    essay = service.get_essay_by_id(essay_id)
-
-    if essay is None:
-        return {"message": "Essay not found"}
-    return essay
+def get_essay(essay_id: int):
+    return service.get_essay_by_id(essay_id)
 
 @app.put("/essays/{essay_id}")
 def update_essay(essay_id: int, essay: EssayUpdate):
-    rows_updated = service.update_essay(essay_id, essay)
-
-    if rows_updated == 0:
-        return {
-            "message": "Essay not found"
-        }
-
-    return {
-        "message": "Essay updated successfully"
-    }
+    return service.update_essay(essay_id, essay)
+    
 
 @app.delete("/essays/{essay_id}")
 def delete_essay(essay_id: int):
-    rows_deleted = service.delete_essay(essay_id)
-
-    if rows_deleted == 0:
-        return {
-            "message": "Essay not found"
-        }
-
-    return {
-        "message": "Essay deleted successfully"
-    }
+    return service.delete_essay(essay_id)
