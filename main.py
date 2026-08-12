@@ -22,7 +22,6 @@ def get_essay(essay_id: int):
 @app.put("/essays/{essay_id}")
 def update_essay(essay_id: int, essay: EssayUpdate):
     return service.update_essay(essay_id, essay)
-    
 
 @app.delete("/essays/{essay_id}")
 def delete_essay(essay_id: int):

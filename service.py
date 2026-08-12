@@ -22,17 +22,13 @@ class EsssayService:
         if rows_updated == 0:
             return {"message": "Essay not found"}
         
-        return {
-            "message": "Essay updated successfully"
-        }
+        return {"message": "Essay updated successfully"}
 
     def delete_essay(self, essay_id):
         rows_deleted = self.repository.delete_essay(essay_id)
         
         if rows_deleted == 0:
-            return {
-                "message": "Essay not found"
-            }
+            return {"message": "Essay not found"}
         
         return {"message": "Essay deleted successfully"}
 

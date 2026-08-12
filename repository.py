@@ -61,30 +61,53 @@ class EssayRepository:
         return essay
 
     def update_essay(self, essay_id, essay):
+
         connection = get_connection()
         cursor = connection.cursor()
+        
+        title = essay.title
+        author_name = essay.author_name
+        body = essay.body
+        status = essay.status
 
-        sql = """
-        update essays
-        set title = :1,
-            author_name = :2,
-            body = :3,
-            status = :4
-        where essay_id = :5
-        """
 
-        cursor.execute(
-            sql,
-            (
-                essay.title,
-                essay.author_name,
-                essay.body,
-                essay.status,
-                essay_id
-            )
-        )
 
-        connection.commit()
+       
+        if title is not None:
+            sql = """
+            update essays
+            set title = :1
+            where essay_id = :2
+            """
+            cursor.execute(sql, (title, essay_id))
+            connection.commit()
+
+        if author_name is not None:
+            sql = """
+            update essays
+            set author_name = :1
+            where essay_id = :2
+            """
+            cursor.execute(sql, (author_name, essay_id))
+            connection.commit()
+
+        if body is not None:
+            sql = """
+            update essays
+            set body = :1
+            where essay_id = :2
+            """
+            cursor.execute(sql, (body, essay_id))
+            connection.commit() 
+
+        if status is not None:
+            sql = """
+            update essays
+            set status = :1
+            where essay_id = :2
+            """
+            cursor.execute(sql, (status, essay_id))
+            connection.commit()       
 
         rows_updated = cursor.rowcount
 

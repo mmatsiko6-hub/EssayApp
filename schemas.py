@@ -7,10 +7,10 @@ class EssayCreate(BaseModel):
     status: str
 
 class EssayUpdate(BaseModel):
-    title: str
-    author_name:str
-    body:str
-    status:str    
+    title: str | None = None
+    author_name:str | None = None
+    body:str | None = None
+    status:str | None = None
 
 class EassyResponse(BaseModel):
     essay_id:int
