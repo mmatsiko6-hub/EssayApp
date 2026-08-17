@@ -1,13 +1,20 @@
 import os
-
-import oracledb
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
 
 load_dotenv()
 
-def get_connection():
-    return oracledb.connect(
-        user = os.getenv("ORACLE_USER"),
-        password = os.getenv("ORACLE_PASSWORD"),
-        dsn = os.getenv("ORACLE_DSN")
-    )
+def connect_data_base():
+    def Database_URL():
+        username = os.getenv("Postrage_username"),
+        password = os.getenv("Postrage_PASSWORD"),
+        mydb = os.getenv("Postrage_DSN")
+        return f"postragespl+psycopy2://{username}:{password}@{mydb}"
+        
+    engine = create_engine(Database_URL)
+
+    SessionLocal = sessionmaker(autocommit = False, autoflush = False, bind = engine)
+
+    return engine, SessionLocal
+
