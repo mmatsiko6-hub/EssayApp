@@ -12,7 +12,7 @@ class EssayUpdate(BaseModel):
     body:str | None = None
     status:str | None = None
 
-class EassyResponse(BaseModel):
+class EssayResponse(BaseModel):
     essay_id:int
     title:str
     author_name:str
