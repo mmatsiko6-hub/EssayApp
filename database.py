@@ -10,9 +10,9 @@ def connect_data_base():
         username = os.getenv("Postrage_username"),
         password = os.getenv("Postrage_PASSWORD"),
         mydb = os.getenv("Postrage_DSN")
-        return f"postragespl+psycopy2://{username}:{password}@{mydb}"
+        return f"postragesql+psycopy2://{username}:{password}@{mydb}"
         
-    engine = create_engine(Database_URL)
+    engine = create_engine(Database_URL())
 
     SessionLocal = sessionmaker(autocommit = False, autoflush = False, bind = engine)
 
