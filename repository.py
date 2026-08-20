@@ -1,136 +1,54 @@
 from database import get_connection
+from models import Essay
+from sqlalchemy.orm import Session
 
 class EssayRepository:
-    def create_essay(self, essay):
-        connection = get_connection()
-        cursor = connection.cursor()
-
-        sql = """
-        INSERT INTO essays (title,author_name, body, status)
-        VALUES (:1, :2, :3, :4)
-        """
-
-        cursor.execute(
-            sql,
-            (
-                essay.title,
-                essay.author_name,
-                essay.body,
-                essay.status,
+    def create_essay(self, db: Session, essay: EssayCreate):
+        new_essay = essay(
+            title = essay.title,
+            author_name = essay.author_name,
+            body = essay.body,
+            status = essay.status
             )
-        )
-        connection.commit()
 
-        cursor.close()
-        connection.close()
-
-        return {
-            "title": essay.title,
-            "author_name": essay.author_name,
-            "body": essay.body,
-            "status": essay.status
-        }
-
-    def get_essay_by_id(self, essay_id):
-        connection = get_connection()
-        cursor = connection.cursor()
-
-        sql = """
-        SELECT essay_id, title, author_name, body, status
-        from essays
-        WHERE essay_id = :1
-        """
-        cursor.execute(sql, (essay_id,))
-        row = cursor.fetchone()
-
+    db.add(new_essay)
+    db.commit()
+    db.refresh()
+    return(new_essay)
     
-        if row is None:
+    
+    def get_essay_by_id(self, essay_id: int, db: Session):
+        db_essay = db.query(Essay).filter(Essay.essay_id = essay_id).first(essay)
+        if db_essay is None:
+            return db_essay
+            
+        return db_essay
+    
+    def update_essay(self, essay_id, essay):
+        db_essay = db.query(Essay).filter(Essay.essay_id == essay_id).first(Essay)
+        
+        if not db_essay:
             return None
 
-        essay = {
-            "essay_id": row[0],
-            "title": row[1],
-            "author_name": row[2],
-            "body": row[3].read(),
-            "status": row[4]
-        }
+        if essay.title is not None:
+            db_essay.essay.title = essay.title 
 
-        cursor.close()
-        connection.close()
-
-        return essay
-
-    def update_essay(self, essay_id, essay):
-
-        connection = get_connection()
-        cursor = connection.cursor()
-        
-        title = essay.title
-        author_name = essay.author_name
-        body = essay.body
-        status = essay.status
-
-
-
-       
-        if title is not None:
-            sql = """
-            update essays
-            set title = :1
-            where essay_id = :2
-            """
-            cursor.execute(sql, (title, essay_id))
-            connection.commit()
-
-        if author_name is not None:
-            sql = """
-            update essays
-            set author_name = :1
-            where essay_id = :2
-            """
-            cursor.execute(sql, (author_name, essay_id))
-            connection.commit()
+        if essay.author_name is not None:
+           db_essay.essay.author_name = essay.author_name
 
         if body is not None:
-            sql = """
-            update essays
-            set body = :1
-            where essay_id = :2
-            """
-            cursor.execute(sql, (body, essay_id))
-            connection.commit() 
+            db_essay.essay.body = essay.body
 
         if status is not None:
-            sql = """
-            update essays
-            set status = :1
-            where essay_id = :2
-            """
-            cursor.execute(sql, (status, essay_id))
-            connection.commit()       
+            db_essay.essay.status = essay.status
 
-        rows_updated = cursor.rowcount
+        db.commit()
+        db.refresh(db_essay)
+        return db_essay
 
-        cursor.close()
-        connection.close()
+    def delete_essay(self, essay_id: int, db: Session):
+        db_essay = db.query(Essay).filter(Essay.essay_id == essay_id).first(Essay)
 
-        return rows_updated
-
-    def delete_essay(self, essay_id):
-        connection = get_connection()
-        cursor = connection.cursor()
-
-        sql = """
-        delete from essays
-        where essay_id = :1
-        """
-
-        cursor.execute(sql, (essay_id,))
-        connection.commit()
-
-        rows_deleted = cursor.rowcount
-
-        cursor.close()
-        connection.close()
-
-        return rows_deleted    
+        db.delete(db_essay)
+        db.commit()
+        return essay_id
