@@ -6,10 +6,12 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def get_database_url():
-    username = os.getenv("Postrage_username"),
-    password = os.getenv("Postrage_PASSWORD"),
-    mydb = os.getenv("Postrage_DSN")
-    return f"postgresql+psycopy2://{username}:{password}@{mydb}"
+    username = os.getenv("POSTGRES_USER")
+    password = os.getenv("POSTGRES_PASSWORD")
+    host = os.getenv("POSTGRES_HOST", "localhost")
+    port = os.getenv("POSTGRES_PORT", "5432")
+    dbname = os.getenv("POSTGRES_DB")
+    return f"postgresql+psycopg2://{username}:{password}@{host}:{port}/{dbname}"
     
 def connect_data_base():
     engine = create_engine(get_database_url())
