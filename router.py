@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from schemas import EssayCreate, EssayUpdate
-from service import EsssayService
+from service import EssayService
 
 service = EsssayService()
 router = APIRouter()
