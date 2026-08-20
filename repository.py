@@ -18,13 +18,13 @@ class EssayRepository:
     
     
     def get_essay_by_id(self, essay_id: int, db: Session):
-        db_essay = db.query(Essay).filter(Essay.essay_id = essay_id).first(essay)
+        db_essay = db.query(Essay).filter(Essay.essay_id = essay_id).first(Essay)
         if db_essay is None:
             return db_essay
             
         return db_essay
     
-    def update_essay(self, essay_id, essay):
+    def update_essay(self, essay_id: int, essay: EssayUpdate, db: Session):
         db_essay = db.query(Essay).filter(Essay.essay_id == essay_id).first(Essay)
         
         if not db_essay:
