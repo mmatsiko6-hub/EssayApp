@@ -5,10 +5,6 @@ from service import EssayService
 service = EsssayService()
 router = APIRouter()
 
-@router.get("/")
-def home():
-    return {"message": "App is running"}
-
 @router.post("/essays")
 def create_essay(essay: EssayCreate):
    return service.create_essay(essay)
