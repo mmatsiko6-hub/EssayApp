@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from schemas import EssayCreate, EssayUpdate
-from service import EsssayService
+from service import EssayService
 
 service = EsssayService()
 router = APIRouter()
@@ -12,7 +12,6 @@ def home():
 @router.post("/essays")
 def create_essay(essay: EssayCreate):
    return service.create_essay(essay)
-   
 
 @router.get("/essays/{essay_id}")
 def get_essay(essay_id: int):
