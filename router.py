@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from database import get_db
 from schemas import EssayCreate, EssayUpdate
 from service import EssayService
-from sqlalchamy import Session
+from sqlalchamy.orm import Session
 
 service = EsssayService()
 router = APIRouter()
