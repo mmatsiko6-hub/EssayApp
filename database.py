@@ -17,3 +17,11 @@ def connect_data_base():
     engine = create_engine(get_database_url())
     SessionLocal = sessionmaker(autocommit = False, autoflush = False, bind = engine)
     return engine, SessionLocal
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
